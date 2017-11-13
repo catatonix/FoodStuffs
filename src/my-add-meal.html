@@ -106,7 +106,7 @@
       </div>
       <div class="card">
         <paper-button raised class="green" on-tap="addMeal">Add Meal</paper-button>      
-        <paper-button raised class="" on-tap="_resetInputs">Clear Meal</paper-button>      
+        <paper-button raised class="" on-tap="confirmClear">Clear Meal</paper-button>      
         
       </div>
 
@@ -118,6 +118,14 @@
         Sorry! We don't yet support adding empty meals...<br>
         Please add some content.
       </paper-alert-dialog>
+      <paper-alert-dialog
+        id="confirmClear"
+        title="are you sure?"
+        dismiss-button="Cancel"
+        confirm-button="Clear"
+        on-confirm="_resetInputs">
+        Do you really want to clear this meal?
+    </paper-alert-dialog>
   </template>
   <script>
     // Your new element extends the Polymer.Element base class
@@ -175,7 +183,9 @@
         this.$.contentQuery.ref.child(key).remove();
         // todo implement different console logs on success or not
       }
-
+      confirmClear(){
+        this.$.confirmClear.open();
+      }
       _validate(label, datetime, content){
         var contentAdded = !(Object.keys(content).length === 0 && content.constructor === Object);  // stack overflow solution to check for object == {}
         return (label && datetime && contentAdded)
