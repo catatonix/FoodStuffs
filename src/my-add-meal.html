@@ -163,7 +163,7 @@
         this.mealContents.forEach(function(mealContent) {
           content[mealContent.$key] = mealContent.$val;
         }, this);
-        if (this._validate(label, datetime, content)){       // TODO #EASY - remember to clear draft between posts
+        if (this._validate(label, datetime, content)){      
           var meal = {  label: label,
                         datetime: datetime,
                         content: content,
@@ -268,7 +268,7 @@
 
     }
     var contents = this.mealContents;
-    //var notes = this.mealNotes; todo implement this
+
     //Now, register your new custom element so the browser can use it
     customElements.define(MyAddMeal.is, MyAddMeal);
   </script>

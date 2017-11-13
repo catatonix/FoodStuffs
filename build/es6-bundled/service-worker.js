@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["bower_components/webcomponentsjs/webcomponents-loader.js","f13bbbbf647b7922575a7894367ddaaf"],["images/favicon.ico","82b34d0faee76b89a9f946763428f668"],["index.html","97a4aea919ce876b1c1c547a5b88d8b5"],["manifest.json","1845171d3c4fe9ebe6a48852f4347b34"],["src/my-account.html","34528fba3d5e5f404ac814b931daff7c"],["src/my-add-meal.html","96814396cdc38478f3d01137c2e40733"],["src/my-app.html","557647542cb3b883fb5f288b761f5b80"],["src/my-meals.html","299093b5a1a2def436b23c23ff086418"],["src/my-view404.html","d9973d9df8cade205a927e12a703685e"]];
+var precacheConfig = [["bower_components/webcomponentsjs/webcomponents-loader.js","f13bbbbf647b7922575a7894367ddaaf"],["images/favicon.ico","82b34d0faee76b89a9f946763428f668"],["index.html","97a4aea919ce876b1c1c547a5b88d8b5"],["manifest.json","1845171d3c4fe9ebe6a48852f4347b34"],["src/my-account.html","34528fba3d5e5f404ac814b931daff7c"],["src/my-add-meal.html","d6ed872f9ac8a04b7ca6f8cd721ee843"],["src/my-app.html","9230ced00f7fc2ef563a6e37e8626dd9"],["src/my-meals.html","f5b300938bf7e1dde43e6ce6f719abde"],["src/my-view404.html","d9973d9df8cade205a927e12a703685e"]];
 var cacheName = 'sw-precache-v3--' + (self.registration ? self.registration.scope : '');
 
 
