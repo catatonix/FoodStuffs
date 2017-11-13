@@ -45,6 +45,10 @@
                 margin-left: 20px;
                 font-size: 80%;
             }
+            .meal .items, .meal .notes{
+                display: inline-block;
+                width: 45%;
+            }
 
         </style>
         <div class="card">
@@ -59,11 +63,18 @@
                                 <span>[[meal.datetime]]</span>
                                 <paper-icon-button src="images/icons/trash.svg" note="[[meal]]" on-tap="remove"></paper-icon-button>
                                 <iron-collapse-button>
-                                        <div slot="collapse-trigger">Meal Contents</div>
+                                        <div slot="collapse-trigger"><h3>Meal Details</h3></div>
                                         <div slot="collapse-content">
-                                            <template is="dom-repeat" items="[[_toArray(meal.content)]]" as="content">
-                                                <p>[[content.value]]</p>
-                                            </template>
+                                            <div class="items">
+                                                <h4>Items</h4>
+                                                <template is="dom-repeat" items="[[_toArray(meal.content)]]" as="content">
+                                                    <p>[[content.value]]</p>
+                                                </template>
+                                            </div>
+                                            <div class="notes">
+                                                <h4 hidden$="[[!meal.notes]]">Notes</h4>
+                                                <p>[[meal.notes]]</p>
+                                            </div>
                                         </div>
                                       </iron-collapse-button>                          
                             </div>

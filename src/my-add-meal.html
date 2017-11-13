@@ -1,6 +1,7 @@
 <!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -86,7 +87,7 @@
       </div>
 
       <div class="card">
-        <paper-input label="Meal Item" id="newContent" required auto-validate>
+        <paper-input label="Meal Item" id="newContent" required>
           <paper-button slot="suffix" on-tap="addContent">Add</paper-button>
         </paper-input>
         <template is="dom-repeat" items="[[mealContents]]" as="mealContent">
@@ -97,6 +98,11 @@
             </li>
           </ul>
         </template>
+      </div>
+      <div class="card">
+        <paper-textarea label="Notes"
+          id="mealNotes">
+        </paper-textarea>
       </div>
       <div class="card">
         <paper-button raised class="green" on-tap="addMeal">Add Meal</paper-button>      
@@ -131,12 +137,14 @@
         console.log("> addContent() called...");
         var val = this.$.newContent.value;
         if (!(val)){
-          console.log("> ... but no content was added.");
+          this.$.newContent.validate();
+          // todo disable invalid state on field focus
+          console.log("> ... but no content was added by addContent().");
         } else{
           this.$.contentQuery.ref.push(val);
           this.$.newContent.value = null;
           console.log(val);
-          console.log("> ... and ^ was added.");
+          console.log("> ... and ^ was added. by addContent()");
         }
       }
 
@@ -145,19 +153,21 @@
         var label = this.$.mealLabel.value;
         var datetime = this.$.mealDate.value + "-" + this.$.mealTime.value;   // todo implement this properly for use as sortorder or have a pos element (maybe not necessary)
         var content = {}      // todo ^ above also check both fields have been filled not just either of them
+        var notes = this.$.mealNotes.value;
         this.mealContents.forEach(function(mealContent) {
           content[mealContent.$key] = mealContent.$val;
         }, this);
         if (this._validate(label, datetime, content)){       // TODO #EASY - remember to clear draft between posts
           var meal = {  label: label,
                         datetime: datetime,
-                        content: content}
+                        content: content,
+                        notes: notes}
           this.$.mealsQuery.ref.push(meal);
           this._resetInputs();
           console.log(meal);
-          console.log("> ... and ^ was added.");
+          console.log("> ... and ^ was added by addMeal().");
         }else{
-          console.log("> ... but no content was added.");
+          console.log("> ... but no content was added by addMeal().");
           this.$.missingContent.open();
         }
       }
@@ -173,11 +183,17 @@
         return (label && datetime && contentAdded)
       }
       _resetInputs(){
+        console.log("> _resetInputs() called...");
+        console.log(this.$.contentQuery);
         try{
           this.$.contentQuery.ref.remove();
-        }catch(e){}
+          console.log("... ^ cleared by resetInputs().")
+        }catch(e){
+          console.log("... failed to clear ^ by resetInputs().")
+        }
         this.mealLabel = this._suggestMealLabel();
         this.today = this._todayDate();
+        this.$.mealNotes.value = "";
         var now = this._todayTime();
         this.mins = now.mins;
         this.hours = now.hours;
