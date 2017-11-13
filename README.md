@@ -1,5 +1,8 @@
 # Polymer App Toolbox - Starter Kit
 
+#Customized by catatonix/check 
+see trello -> https://trello.com/b/P2eCaDjK/soph
+
 [![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
 
 This template is a starting point for building apps using a drawer-based
