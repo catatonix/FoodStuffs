@@ -1,12 +1,13 @@
 <!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-time-input/paper-time-input.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
-<!-- <link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">  TODO remove this line and the library if its replace -->  
+<link rel="import" href="../bower_components/paper-alert-dialog/paper-alert-dialog.html">
 <link rel="import" href="../bower_components/titanium-date-input/titanium-date-input.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 
@@ -78,8 +79,8 @@
             id="mealDate"
             error-message="Please use a valid date of birth"
             date-pattern="dd/mm/yyyy"
-            placeholder="{{today}}"
-            value="[[today]]">
+            placeholder="{{date}}"
+            value="[[date]]">
           </titanium-date-input>
           
         </div>
@@ -99,10 +100,32 @@
         </template>
       </div>
       <div class="card">
+        <paper-textarea label="Notes"
+          id="mealNotes">
+        </paper-textarea>
+      </div>
+      <div class="card">
         <paper-button raised class="green" on-tap="addMeal">Add Meal</paper-button>      
-        <paper-button raised class="" on-tap="_resetInputs">Clear Meal</paper-button>      
+        <paper-button raised class="" on-tap="confirmClear">Clear Meal</paper-button>      
         
       </div>
+
+      <paper-alert-dialog
+        id="missingContent"
+        title="No Content!!"
+        confirm-button="OK"
+        on-confirm="confirm">
+        Sorry! We don't yet support adding empty meals...<br>
+        Please add some content.
+      </paper-alert-dialog>
+      <paper-alert-dialog
+        id="confirmClear"
+        title="are you sure?"
+        dismiss-button="Cancel"
+        confirm-button="Clear"
+        on-confirm="_resetInputs">
+        Do you really want to clear this meal?
+    </paper-alert-dialog>
   </template>
   <script>
     // Your new element extends the Polymer.Element base class
@@ -112,58 +135,73 @@
         return {
           mealContents: {
             type: Object
-          },
-          meals: {
-            type: Object
-          }
+           }
         }
       }
 
       addContent(){ 
+        console.log("> addContent() called...");
         var val = this.$.newContent.value;
         if (!(val)){
-          console.log("> addContent() called... but no content was added.");
-          // todo graphically notify user of incorrect input
+          this.$.newContent.validate();
+          // todo disable invalid state on field focus
+          console.log("> ... but no content was added by addContent().");
         } else{
           this.$.contentQuery.ref.push(val);
           this.$.newContent.value = null;
+          console.log(val);
+          console.log("> ... and ^ was added by addContent().");
         }
       }
 
       addMeal(){
+        console.log("> addMeal() called...");
         var label = this.$.mealLabel.value;
         var datetime = this.$.mealDate.value + "-" + this.$.mealTime.value;   // todo implement this properly for use as sortorder or have a pos element (maybe not necessary)
         var content = {}      // todo ^ above also check both fields have been filled not just either of them
+        var notes = this.$.mealNotes.value;
         this.mealContents.forEach(function(mealContent) {
           content[mealContent.$key] = mealContent.$val;
         }, this);
         if (this._validate(label, datetime, content)){       // TODO #EASY - remember to clear draft between posts
           var meal = {  label: label,
                         datetime: datetime,
-                        content: content}
+                        content: content,
+                        notes: notes}
           this.$.mealsQuery.ref.push(meal);
           this._resetInputs();
+          console.log(meal);
+          console.log("> ... and ^ was added by addMeal().");
         }else{
-          console.log("> addMeal() called... but no meal added.");
-          // todo graphically indicate that the button pres had no effect
+          console.log("> ... but no content was added by addMeal().");
+          this.$.missingContent.open();
         }
       }
 
       remove(e){
         var key = e.currentTarget.note.$key;
         this.$.contentQuery.ref.child(key).remove();
+        // todo implement different console logs on success or not
       }
-
+      confirmClear(){
+        this.$.confirmClear.open();
+      }
       _validate(label, datetime, content){
         var contentAdded = !(Object.keys(content).length === 0 && content.constructor === Object);  // stack overflow solution to check for object == {}
         return (label && datetime && contentAdded)
       }
       _resetInputs(){
+        console.log("> _resetInputs() called...");
+        console.log(this.$.contentQuery);
         try{
           this.$.contentQuery.ref.remove();
-        }catch(e){}
+          console.log("... ^ cleared by resetInputs().")
+        }catch(e){
+          console.log("... failed to clear ^ by resetInputs().")
+        }
         this.mealLabel = this._suggestMealLabel();
-        this.today = this._todayDate();
+        this.date = this._todayDate();
+        this.$.mealNotes.value = "";
         var now = this._todayTime();
         this.mins = now.mins;
         this.hours = now.hours;
@@ -195,12 +233,37 @@
         now = {mins: mins,
               hours: hours,
               amPm: amPm};
-        console.log(now);
         return now;
+      }
+      _parseTime(datetime){
+        // parses objects from firebase datetime string
+        var split = datetime.split("-");
+        var date = split[0];
+        split = split[1].split(":");
+        var hours = split[0];
+        split = split[1].split(" ");
+        var mins = split[0];
+        var amPm = split[1];
+        return {
+          date: date,
+          hours: hours,
+          mins: mins,
+          amPm: amPm
+        }
+      }
+      _renderMeal(meal){
+        this.mealLabel = meal.mealLabel;
+        var time = this._parseTime(meal.datetime);
+        this.hours = time.hours;
+        this.mins = time.mins;
+        this.amPm = time.amPm;
+        this.date = time.date;
+        this.mealContent = time.mealContent;
       }
       ready(){
         super.ready();
         this._resetInputs();
+        this._parseTime("13/11/2017-2:21 AM");
       }
 
     }

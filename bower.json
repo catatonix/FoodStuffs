@@ -25,7 +25,8 @@
     "app-datepicker": "^2.11.2",
     "titanium-date-input": "^1.0.25",
     "papyrus-details": "^1.0.6",
-    "iron-collapse-button": "^1.0.1"
+    "iron-collapse-button": "^1.0.1",
+    "paper-alert-dialog": "^2.0.1"
   },
   "resolutions": {
     "polymer": "^2.0.0",
