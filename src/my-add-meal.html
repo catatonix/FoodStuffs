@@ -112,7 +112,7 @@
 
       <paper-alert-dialog
         id="missingContent"
-        title="No Content!"
+        title="No Content!!"
         confirm-button="OK"
         on-confirm="confirm">
         Sorry! We don't yet support adding empty meals...<br>
@@ -127,10 +127,7 @@
         return {
           mealContents: {
             type: Object
-           }//,
-          // meals: {
-          //   type: Object
-          // }
+           }
         }
       }
 
@@ -145,7 +142,7 @@
           this.$.contentQuery.ref.push(val);
           this.$.newContent.value = null;
           console.log(val);
-          console.log("> ... and ^ was added. by addContent()");
+          console.log("> ... and ^ was added by addContent().");
         }
       }
 
