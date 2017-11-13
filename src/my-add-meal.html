@@ -79,8 +79,8 @@
             id="mealDate"
             error-message="Please use a valid date of birth"
             date-pattern="dd/mm/yyyy"
-            placeholder="{{today}}"
-            value="[[today]]">
+            placeholder="{{date}}"
+            value="[[date]]">
           </titanium-date-input>
           
         </div>
@@ -127,10 +127,10 @@
         return {
           mealContents: {
             type: Object
-          },
-          meals: {
-            type: Object
-          }
+           }//,
+          // meals: {
+          //   type: Object
+          // }
         }
       }
 
@@ -193,7 +193,7 @@
           console.log("... failed to clear ^ by resetInputs().")
         }
         this.mealLabel = this._suggestMealLabel();
-        this.today = this._todayDate();
+        this.date = this._todayDate();
         this.$.mealNotes.value = "";
         var now = this._todayTime();
         this.mins = now.mins;
@@ -228,9 +228,35 @@
               amPm: amPm};
         return now;
       }
+      _parseTime(datetime){
+        // parses objects from firebase datetime string
+        var split = datetime.split("-");
+        var date = split[0];
+        split = split[1].split(":");
+        var hours = split[0];
+        split = split[1].split(" ");
+        var mins = split[0];
+        var amPm = split[1];
+        return {
+          date: date,
+          hours: hours,
+          mins: mins,
+          amPm: amPm
+        }
+      }
+      _renderMeal(meal){
+        this.mealLabel = meal.mealLabel;
+        var time = this._parseTime(meal.datetime);
+        this.hours = time.hours;
+        this.mins = time.mins;
+        this.amPm = time.amPm;
+        this.date = time.date;
+        this.mealContent = time.mealContent;
+      }
       ready(){
         super.ready();
         this._resetInputs();
+        this._parseTime("13/11/2017-2:21 AM");
       }
 
     }
