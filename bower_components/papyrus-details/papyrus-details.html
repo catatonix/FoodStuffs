@@ -1,0 +1,52 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="language-behavior.html">
+
+<dom-module id="papyrus-details">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #summary-container { display: inline-block; width: calc(100% - 5em); }
+      #expander { overflow:hidden; display: block; transition: height 400ms ease-in-out; }
+      #expander.hidden { height: 0px !important; }
+      #toggle { display: inline-block; }
+    </style>
+    <div id="summary-container">
+      <content select="summary"/>
+    </div>
+    <a id="toggle" on-tap="toggle" href="javascript:void(0)">[[_getLinkText(expanded,language)]]</a>
+    <div id="expander" class$="[[_getHiddenClass(expanded)]]">
+        <content/>
+    </div>
+  </template>
+
+  <script>
+    (function(){
+        var languages = {
+            en: { open: "Open", close: "Close" },
+            fr: { open: "Ouvrir", close: "Fermer" },
+            de: { open: "Öffnen", close: "Schließen" },
+            es: { open: "Abrir", close: "Cerrar" }
+        };
+
+        Polymer({
+          is: 'papyrus-details',
+          behaviors: [ LanguageBehavior ],
+          properties: { expanded: { type: Boolean, value: false }},
+          _getHiddenClass: function() { return this.expanded ? "" : "hidden"; },
+          _getLinkText: function () {
+            var language = languages[this.language] || languages.en;
+            return this.expanded ? language.close : language.open;
+          },
+          attached: function(){ 
+            var wasExpanded = this.expanded;
+            this.set('expanded', true);
+            this.$.expander.style.height = this.$.expander.offsetHeight + "px";
+            this.set('expanded', wasExpanded);
+          },
+          toggle: function() { this.set('expanded', !this.expanded); }
+        });
+      })();
+  </script>
+</dom-module>

@@ -1,0 +1,107 @@
+<!-- Load the Polymer.Element base class -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<!-- <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html"> TODO probably uninstall this.. -->
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<!-- <link rel="import" href="../bower_components/papyrus-details/papyrus-details.html"> TODO uninstall this too -->
+<link rel="import" href="../bower_components/iron-collapse-button/iron-collapse-button.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-meals">
+  <!-- Defines the element's style and local DOM -->
+    <template>
+        <firebase-auth 
+            id="auth" 
+            user="{{user}}" 
+            provider="google" 
+            on-error="handleError">
+        </firebase-auth>
+        <firebase-query
+            id="mealsQuery"
+            path="/users/[[user.uid]]/meals"
+            data="{{meals}}">
+        </firebase-query>
+
+        <style include="shared-styles">  
+            :host {
+                display: block;
+                padding: 16px;
+            } 
+            .meal > h2{
+                display: inline-block;
+                width: 65%;
+            }
+            .meal > span{
+                display: inline-block;
+                width: 25%;
+            }
+            .meal > paper-icon-button{
+                width: 5%;
+            }
+            .meal iron-collapse-button p{
+                margin-left: 20px;
+                font-size: 80%;
+            }
+
+        </style>
+        <div class="card">
+            <h1>My Meals</h1> 
+
+            <div id="meals">
+                <ul>
+                    <template is="dom-repeat" items="[[meals]]" as="meal">
+                        <li>
+                            <div class="card meal">
+                                <h2>[[meal.label]]</h2>
+                                <span>[[meal.datetime]]</span>
+                                <paper-icon-button src="images/icons/trash.svg" note="[[meal]]" on-tap="remove"></paper-icon-button>
+                                <iron-collapse-button>
+                                        <div slot="collapse-trigger">Meal Contents</div>
+                                        <div slot="collapse-content">
+                                            <template is="dom-repeat" items="[[_toArray(meal.content)]]" as="content">
+                                                <p>[[content.value]]</p>
+                                            </template>
+                                        </div>
+                                      </iron-collapse-button>                          
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+        </div>
+    </template>
+    <script>
+        // Your new element extends the Polymer.Element base class
+        class MyMeals extends Polymer.Element {
+            static get is() { return 'my-meals'; }
+            static get Properties(){
+                return {
+                    meals: Object
+                }
+            }
+            remove(e){
+                var key = e.currentTarget.note.$key;
+                console.log(this.$.mealsQuery.ref);
+                this.$.mealsQuery.ref.child(key).remove();
+            }
+            _toArray(obj) {
+                // stack overflow solution for return individual keypair items as an array for dom-repeat (https://stackoverflow.com/questions/30781500/how-to-use-dom-repeat-with-objects-instead-of-arrays-in-polymer-1-0/30794220#30794220)
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        name: key,
+                        value: obj[key]
+                    };
+                });
+            }
+
+        }
+        //Now, register your new custom element so the browser can use it
+        customElements.define(MyMeals.is, MyMeals);
+    </script>
+</dom-module>
+
+<!-- TODO find a way to simplifying displaying firebase data with an add and delete button so it is more reusable --> 

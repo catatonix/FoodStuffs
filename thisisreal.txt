@@ -1,0 +1,3 @@
+just a flag file
+
+delete when capable of remembering current project
