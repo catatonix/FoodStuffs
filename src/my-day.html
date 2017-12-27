@@ -1,0 +1,47 @@
+<!-- Load the Polymer.Element base class -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-day">
+  <!-- Defines the element's style and local DOM -->
+    <template>
+        <firebase-auth 
+            id="auth" 
+            user="{{user}}" 
+            provider="google" 
+            on-error="handleError">
+        </firebase-auth>
+        <firebase-query
+            id="mealsQuery"
+            path="/users/[[user.uid]]/meals"
+            data="{{meals}}">
+        </firebase-query>
+
+        <style include="shared-styles">  
+            :host {
+                display: block;
+                padding: 16px;
+            } 
+        </style>
+    
+
+    </template>
+    <script>
+        // Your new element extends the Polymer.Element base class
+        class MyDay extends Polymer.Element {
+            static get is() { return 'my-day'; }
+            static get Properties(){
+                return {
+                }
+            }
+     
+
+        }
+        //Now, register your new custom element so the browser can use it
+        customElements.define(MyDay.is, MyDay);
+    </script>
+</dom-module>
