@@ -1,55 +1,49 @@
 <!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
-<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 
-<link rel="import" href="../bower_components/skeleton-carousel/skeleton-carousel.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="my-events-list.html">
 
 <dom-module id="my-day">
   <!-- Defines the element's style and local DOM -->
     <template>
-        <firebase-auth 
-            id="auth" 
-            user="{{user}}" 
-            provider="google" 
-            on-error="handleError">
-        </firebase-auth>
-        <firebase-query
-            id="mealsQuery"
-            path="/users/[[user.uid]]/meals"
-            data="{{meals}}">
-        </firebase-query>
-
+    
         <style include="shared-styles">  
             :host {
                 display: block;
                 padding: 16px;
             } 
+
+            .card{
+                margin: 0;
+            }
+            .yesterday{
+                background: grey;
+                padding: 5px;
+                font-size: 80%;
+                margin: 0;
+            }
+            #head{
+                margin-bottom: 20px;
+            }
+            .datepicker{
+                width: auto;
+                display: inline-block;
+                margin-left: 45%;
+                margin-right: 0;
+            }
         </style>
+        
+        <div id='head'>
+            <paper-button class="yesterday">Yesterday</paper-button>
+            <div class="card datepicker">Datepicker goes here</div>
+        </div>
 
-        <skeleton-carousel dots nav loop>
-            <iron-image placeholder="https://source.unsplash.com/category/nature/10x10"
-                        data-src="https://source.unsplash.com/category/nature/500x300"
-                        sizing="cover"
-                        preload
-                        fade
-                        ></iron-image>
-            <iron-image placeholder="https://source.unsplash.com/category/food/10x10"
-                        data-src="https://source.unsplash.com/category/food/500x300"
-                        sizing="cover"
-                        preload
-                        fade
-                        ></iron-image>
-            <iron-image placeholder="https://source.unsplash.com/category/buildings/10x10"
-                        data-src="https://source.unsplash.com/category/buildings/500x300"
-                        sizing="cover"
-                        preload
-                        fade
-                        ></iron-image>
-         </skeleton-carousel>
-
+        <my-events-list></my-events-list>
+                
+    
     </template>
     <script>
         // Your new element extends the Polymer.Element base class
@@ -57,10 +51,18 @@
             static get is() { return 'my-day'; }
             static get Properties(){
                 return {
+                    currentDay: {
+                        type: Date
+                    },
+                    user: {
+                        type: Object
+                    }
                 }
-            }
-     
 
+            }
+            
+            
+            
         }
         //Now, register your new custom element so the browser can use it
         customElements.define(MyDay.is, MyDay);

@@ -28,11 +28,13 @@
     "iron-collapse-button": "^1.0.1",
     "paper-alert-dialog": "^2.0.1",
     "iron-swipeable-pages": "^1.2.10",
-    "skeleton-carousel": "FabricElements/skeleton-carousel#^2.0.5"
+    "skeleton-carousel": "FabricElements/skeleton-carousel#^2.0.5",
+    "datetime-picker": "fooloomanzoo/datetime-picker#^2.5.5",
+    "strand": "MediaMath/strand#^4.5.0"
   },
   "resolutions": {
     "polymer": "^2.0.0",
-    "webcomponentsjs": "^v1.0.2",
+    "webcomponentsjs": "^1.0.0",
     "iron-resizable-behavior": "1 - 2",
     "iron-selector": "^2.0.0"
   },

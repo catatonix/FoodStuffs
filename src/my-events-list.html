@@ -1,0 +1,90 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/iron-collapse-button/iron-collapse-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/datetime-picker/datetime-input.html">
+
+<link rel="import" href="my-add-event.html">
+
+<dom-module id="my-events-list">
+  <template>
+    <style include="shared-styles">
+      :host{
+
+      }
+      .card{
+        margin-left: 0;
+        margin-right: 0;
+      }
+      #add{
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #addEventDialog{
+        top: 64px;
+        left: 0;
+        width: 100%;
+        position: absolute;
+        padding: 5px;
+      }
+    </style>
+
+    <firebase-auth user="{{user}}"></firebase-auth>
+    <firebase-query
+      id="mealsQuery"
+      path="/users/[[user.uid]]/meals"
+      data="{{events}}">
+    </firebase-query>
+    <!-- TODO replace above with events query and sort by datetime -->
+
+    
+    <dom-bind>
+        <template is="dom-bind">
+          <datetime-input value="{{datetime}}"></datetime-input>
+          <div class="vertical-section-container result">
+            <div><code>datetime</code>: <b>[[datetime]]</b></div>
+          </div>
+        </template>
+      </dom-bind>
+
+    <template is="dom-repeat" items="[[events]]" as="event">
+      <div class="card">
+        <iron-collapse-button>
+          <div slot="collapse-trigger" style="width:100%"><h3>[[event.label]]</h3></div>
+          <div slot="collapse-content">
+        </div>
+      </div>
+    </template> 
+
+    <paper-fab icon="add" on-tap="openAddEventDialog" id="add" title="add"></paper-fab>          
+
+    <paper-dialog name="dialog" id="addEventDialog">
+        <my-add-event></my-add-event>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm autofocus>Accept</paper-button>
+        </div>
+      </paper-dialog>
+
+
+  </template>
+  <script>
+    // Your new element extends the Polymer.Element base class
+    class MyEventsList extends Polymer.Element {
+        static get is() { return 'my-events-list'; }
+        static get Properties(){
+            return {            }
+        }
+        openAddEventDialog(){
+          this.$.addEventDialog.open();
+        }
+    }
+    
+    //Now, register your new custom element so the browser can use it
+    customElements.define(MyEventsList.is, MyEventsList);
+</script>
+</dom-module>

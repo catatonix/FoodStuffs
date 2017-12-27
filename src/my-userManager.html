@@ -1,0 +1,38 @@
+<!-- Load the Polymer.Element base class -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-new-view">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style include="shared-styles">  
+    </style>
+
+    <firebase-auth 
+        id="auth" 
+        user="{{user}}" 
+        provider="google" 
+        on-error="handleError">
+    </firebase-auth>
+
+  </template>
+  <script>
+    // Your new element extends the Polymer.Element base class
+    class MyUserManager extends Polymer.Element {
+      static get is() { return 'my-user-manager'; }
+      static get Properties(){
+        return{
+            user: {
+                type: Object
+            }
+        }
+      }
+    }
+    //Now, register your new custom element so the browser can use it
+    customElements.define(MyUserManager.is, MyUserManager);
+  </script>
+</dom-module>

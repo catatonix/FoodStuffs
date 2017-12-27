@@ -170,22 +170,21 @@
       }
 
       pushMeal(){
-        if (this.editKey){
-          this.$.mealsQuery.child(this.editKey).set(this.meal);
-          // if edit key is set ss
-
-        }else{
+        // if (this.editKey){
+        //   this.$.mealsQuery.child(this.editKey).set(this.meal);
+        //   // if edit key is set ss
+        // }else{
           /* Adds the current meal object to the firebase meal ref */
           console.log("> pushMeal() called...");
           this.meal = this._loadMealFromInputs();
           if (this.meal != false){
-            this.$.mealsQuery.ref(push(meal));
+            this.$.mealsQuery.ref.push(this.meal);
             console.log("> ... and ^ was added by pushMeal().");
           }else{
             console.log("> ... but no content was added by pushMeal().");
             this.$.missingContent.open();
           }
-        }
+        //}
       }
 
       remove(e){
