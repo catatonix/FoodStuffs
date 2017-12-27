@@ -26,11 +26,15 @@
     "titanium-date-input": "^1.0.25",
     "papyrus-details": "^1.0.6",
     "iron-collapse-button": "^1.0.1",
-    "paper-alert-dialog": "^2.0.1"
+    "paper-alert-dialog": "^2.0.1",
+    "iron-swipeable-pages": "^1.2.10",
+    "skeleton-carousel": "FabricElements/skeleton-carousel#^2.0.5"
   },
   "resolutions": {
     "polymer": "^2.0.0",
-    "webcomponentsjs": "^v1.0.2"
+    "webcomponentsjs": "^v1.0.2",
+    "iron-resizable-behavior": "1 - 2",
+    "iron-selector": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"

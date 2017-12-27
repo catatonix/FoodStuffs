@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 
+<link rel="import" href="../bower_components/skeleton-carousel/skeleton-carousel.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -27,7 +28,27 @@
                 padding: 16px;
             } 
         </style>
-    
+
+        <skeleton-carousel dots nav loop>
+            <iron-image placeholder="https://source.unsplash.com/category/nature/10x10"
+                        data-src="https://source.unsplash.com/category/nature/500x300"
+                        sizing="cover"
+                        preload
+                        fade
+                        ></iron-image>
+            <iron-image placeholder="https://source.unsplash.com/category/food/10x10"
+                        data-src="https://source.unsplash.com/category/food/500x300"
+                        sizing="cover"
+                        preload
+                        fade
+                        ></iron-image>
+            <iron-image placeholder="https://source.unsplash.com/category/buildings/10x10"
+                        data-src="https://source.unsplash.com/category/buildings/500x300"
+                        sizing="cover"
+                        preload
+                        fade
+                        ></iron-image>
+         </skeleton-carousel>
 
     </template>
     <script>
