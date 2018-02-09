@@ -5,8 +5,7 @@
 
 <link rel="import" href="../bower_components/datetime-picker/datetime-input.html">
 
-<script language="javascript" src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-<link rel="import" href="bower_components/strand/dist/strand.html"/>
+<link rel="import" href="../bower_components/ibm-tabs/ibm-tabs.html">
 
 <dom-module id="my-add-event">
   <template>
@@ -27,8 +26,24 @@
         display: inline-block;
         text-align: right;
       }
+      ibm-tabs{
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      ibm-tab{
+        width: 50%;
+        text-align: center;
+        display: inline-block;
+        height: 2em;
+      }
       #description{
         text-align: left;
+      }
+      .tab{
+        display: none;
+      }
+      .tab.visible{
+        display: block;
       }
     </style>
 
@@ -36,6 +51,14 @@
     <h2 id="description">Add Event</h2>
 
     <h2><datetime-input id="datetime" value="{{datetime}}"></datetime-input></h2>
+
+    <ibm-tabs on-tap="updateTabs" selected="{{tabSelected}}">
+      <ibm-tab on-tap="updateTabs" id="mealTab">Meal</ibm-tab>
+      <ibm-tab on-tap="updateTabs" id="symptomTab">Symptom</ibm-tab>
+    </ibm-tabs>
+
+    <div id="mealInfo" class="tab">meal info</div>
+    <div id="symptomInfo" class="tab">symptomInfo</div>
 
     <paper-fab icon="add" id="add" title="add"></paper-fab>          
 
@@ -45,12 +68,21 @@
     class MyAddEvent extends Polymer.Element {
         static get is() { return 'my-add-event'; }
         static get Properties(){
-          return {}
+          return {      
+            tabSelected: {
+              type: String
+            }
+              }
         }
 
         ready(){
           super.ready();
           this.$.datetime.value = new Date();
+          this.updateTabs();
+        }
+
+        updateTabs(){
+       
         }
                 
     }

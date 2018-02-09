@@ -30,7 +30,8 @@
     "iron-swipeable-pages": "^1.2.10",
     "skeleton-carousel": "FabricElements/skeleton-carousel#^2.0.5",
     "datetime-picker": "fooloomanzoo/datetime-picker#^2.5.5",
-    "strand": "MediaMath/strand#^4.5.0"
+    "strand": "MediaMath/strand#^4.5.0",
+    "ibm-tabs": "IBMResearch/ibm-tabs#^2.0.1"
   },
   "resolutions": {
     "polymer": "^2.0.0",
