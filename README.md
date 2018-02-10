@@ -1,3 +1,5 @@
+> Dev notes: Demo of polymer fire: google sign in based meal tracker
+
 # Polymer App Toolbox - Starter Kit
 
 #Customized by catatonix/check 
